@@ -3,6 +3,8 @@
     font-weight: 800;
     text-align: center;
     align-self: center;
+    color: white;
+    text-shadow: 0 0 10px rgba(215, 215, 215, 0.8);
 }
 
 .header-container {
@@ -12,4 +14,5 @@
     border: 3px solid gray;
     box-shadow: 4px 4px 0 3px black;
     border-radius: 10px;
+    backdrop-filter: blur(10px);
 }

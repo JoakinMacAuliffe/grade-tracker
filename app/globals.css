@@ -8,6 +8,9 @@ html {
 body {
   background-image: url('/images/DSC_0492.jpg');
   background-size: cover;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 * {
@@ -20,3 +23,6 @@ body {
   box-sizing: border-box;
 }
 
+main {
+  flex: 1;
+}
