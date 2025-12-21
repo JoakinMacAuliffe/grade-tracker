@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export function middleware(request) {
+export function proxy(request) {
     const passwordCookie = request.cookies.get("app_password")?.value;
     const pathName = request.nextUrl.pathname;
 
