@@ -6,7 +6,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <title>Grade Tracker</title>
       </head>
       <body>
         <Header />

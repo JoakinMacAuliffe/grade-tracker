@@ -6,21 +6,21 @@ html {
 }
 
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  flex-direction: column;
+  display: flex;
   background-image: url('/images/DSC_0492.jpg');
   background-size: cover;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-* {
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: white;
   font-family: "Geologica", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings: "slnt" 0, "CRSV" 0, "SHRP" 0;
-  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 600;
+
 }
 
 main {
