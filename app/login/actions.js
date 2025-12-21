@@ -5,7 +5,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function loginAction(formData) {
+export async function loginAction(prevState, formData) {
     const passwordInput = formData.get("password");
     const secretPassword = process.env.MASTER_PASSWORD;
 
@@ -20,7 +20,7 @@ export async function loginAction(formData) {
             path: "/",
         });
 
-        redirect("/home");
+        redirect("/");
     } else {
         return { error: "Clave incorrecta" }
     }

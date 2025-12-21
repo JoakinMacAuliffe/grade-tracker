@@ -1,12 +1,11 @@
-import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function requireAuth(request) {
+export function middleware(request) {
     const passwordCookie = request.cookies.get("app_password")?.value;
-    const pathName = request.nextUrl;
+    const pathName = request.nextUrl.pathname;
 
     // let unlogged users to access the login page and essential next resources
-    if (pathname === "/login" || pathName.startsWith("/_next")) {
+    if (pathName === "/login" || pathName.startsWith("/_next")) {
         return NextResponse.next();
     }
 
@@ -17,7 +16,6 @@ export function requireAuth(request) {
     return NextResponse.next();
 }
 
-// which routes to protect  
 export const config = {
-    matcher: ["/home/:path*", "/grades/:*"]
+    matcher: ["/((?!_next|login|images).*)"]  // Protect everything except login and _next
 }
