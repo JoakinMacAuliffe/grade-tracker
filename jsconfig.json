@@ -29,8 +29,11 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "**/*.ts",
-    "**/*.tsx"
-, "app/layout.js", "app/page.js", "dbdb/schema.js ],
+    "**/*.tsx",
+    "app/layout.js",
+    "app/page.js",
+    "db/schema.js"
+  ],
   "exclude": [
     "node_modules"
   ]

@@ -14,7 +14,7 @@ export async function loginAction(prevState, formData) {
 
         cookieStore.set("app_password", passwordInput, {
             httpOnly: true,
-            secure: true,
+            secure: true,   
             sameSite: 'lax',
             maxAge: 60 * 60 * 24 * 90, // lasts 90 days logged in
             path: "/",
