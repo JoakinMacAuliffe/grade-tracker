@@ -30,10 +30,10 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
-    "app/layout.js",
-    "app/page.js",
-    "db/schema.js"
-  ],
+    "src/app/layout.js",
+    "src/app/page.js",
+    "src/db/schema.js"
+, "drizzle.config.js"  ],
   "exclude": [
     "node_modules"
   ]
