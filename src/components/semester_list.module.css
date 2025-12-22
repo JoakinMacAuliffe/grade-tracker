@@ -1,0 +1,182 @@
+/* I'm sorry but i can't be bothered creating css files so this is almost fully AI made... */
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.links {
+  display: flex;
+  gap: 2rem;
+}
+
+.semesterBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  padding: 1rem 2rem;
+  min-width: 200px;
+
+  border: 3px solid gray;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 4px 4px 0 3px black;
+
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.semesterBox:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 3px black;
+  border-color: lightgray;
+}
+
+.semesterBox:active {
+  transform: translateY(2px);
+  box-shadow: 2px 2px 0 2px black;
+}
+
+.semesterBox:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 4px;
+}
+
+.semesterForm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.formContainer {
+  background: rgba(0, 0, 0, 0.95);
+  border: 3px solid gray;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 3px black;
+  width: 90%;
+  max-width: 500px;
+  animation: slideUp 0.3s ease-out;
+  color: white;
+}
+
+.formContainer h3 {
+  margin: 0 0 2rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.formContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formContainer label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.formContainer input {
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+  border: 2px solid gray;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-family: "Geologica", sans-serif;
+  transition: all 0.2s ease;
+}
+
+.formContainer input:focus {
+  outline: none;
+  border-color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancelButton,
+.submitButton {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: 3px solid gray;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Geologica", sans-serif;
+  box-shadow: 3px 3px 0 2px black;
+  user-select: none;
+}
+
+.cancelButton {
+  background: rgba(255, 50, 50, 0.4);
+  color: white;
+  border-color: rgba(255, 100, 100, 0.5);
+}
+
+.cancelButton:hover {
+  background: rgba(255, 50, 50, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0 2px black;
+  border-color: rgba(255, 150, 150, 0.8);
+}
+
+.submitButton {
+  background: rgba(50, 255, 50, 0.4);
+  color: white;
+  border-color: rgba(100, 255, 100, 0.5);
+}
+
+.submitButton:hover {
+  background: rgba(50, 255, 50, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0 2px black;
+  border-color: rgba(150, 255, 150, 0.8);
+}
+
+.cancelButton:active,
+.submitButton:active {
+  transform: translateY(1px);
+  box-shadow: 2px 2px 0 1px black;
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}

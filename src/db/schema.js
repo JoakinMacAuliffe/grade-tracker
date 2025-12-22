@@ -61,7 +61,6 @@ export const evaluaciones = pgTable('evaluaciones', {
 
 export const semestres = pgTable('semestres', {
   id: serial("id").primaryKey(),
-  numero: smallint("numero").notNull(),
   año: integer("año").notNull(),
   activo: boolean("activo").default(false),
   fechaInicio: date("fechaInicio"),
