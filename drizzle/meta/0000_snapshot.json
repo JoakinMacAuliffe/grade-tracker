@@ -1,0 +1,285 @@
+{
+  "id": "9c0ea509-0d49-4162-bd9e-b048fc5269fd",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.evaluaciones": {
+      "name": "evaluaciones",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "titulo": {
+          "name": "titulo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nota": {
+          "name": "nota",
+          "type": "numeric(2, 1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "temario": {
+          "name": "temario",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ponderacion": {
+          "name": "ponderacion",
+          "type": "numeric(3, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ramoId": {
+          "name": "ramoId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "evaluaciones_ramoId_ramos_id_fk": {
+          "name": "evaluaciones_ramoId_ramos_id_fk",
+          "tableFrom": "evaluaciones",
+          "tableTo": "ramos",
+          "columnsFrom": [
+            "ramoId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "nota_range": {
+          "name": "nota_range",
+          "value": "\"evaluaciones\".\"nota\" >= 1.0 AND \"evaluaciones\".\"nota\" <= 7.0"
+        },
+        "pond_range": {
+          "name": "pond_range",
+          "value": "\"evaluaciones\".\"ponderacion\" >= 0.0 AND \"evaluaciones\".\"ponderacion\" <= 1.0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.ramos": {
+      "name": "ramos",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "titulo": {
+          "name": "titulo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "codRamo": {
+          "name": "codRamo",
+          "type": "char(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creditos": {
+          "name": "creditos",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notaEximicion": {
+          "name": "notaEximicion",
+          "type": "numeric(2, 1)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 5
+        },
+        "semestreId": {
+          "name": "semestreId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ramos_semestreId_semestres_id_fk": {
+          "name": "ramos_semestreId_semestres_id_fk",
+          "tableFrom": "ramos",
+          "tableTo": "semestres",
+          "columnsFrom": [
+            "semestreId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.secciones": {
+      "name": "secciones",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "numero": {
+          "name": "numero",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "docente": {
+          "name": "docente",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "tipo_seccion",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ramoId": {
+          "name": "ramoId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "secciones_ramoId_ramos_id_fk": {
+          "name": "secciones_ramoId_ramos_id_fk",
+          "tableFrom": "secciones",
+          "tableTo": "ramos",
+          "columnsFrom": [
+            "ramoId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.semestres": {
+      "name": "semestres",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "numero": {
+          "name": "numero",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "año": {
+          "name": "año",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "activo": {
+          "name": "activo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "fechaInicio": {
+          "name": "fechaInicio",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fechaFin": {
+          "name": "fechaFin",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.tipo_seccion": {
+      "name": "tipo_seccion",
+      "schema": "public",
+      "values": [
+        "Cátedra",
+        "Laboratorio",
+        "Ayudantía"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
