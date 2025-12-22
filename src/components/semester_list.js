@@ -33,11 +33,19 @@ export default function SemesterList({ semesters }) {
             <form>
               <label>
                 Número de Semestre:
-                <input type="number" name="numero" required />
+                <input type="number" name="id" required />
               </label>
               <label>
                 Año:
                 <input type="number" name="año" required />
+              </label>
+              <label>
+                Fecha de Inicio:
+                <input type="date" name="fechaInicio" />
+              </label>
+              <label>
+                Fecha de Término:
+                <input type="date" name="fechaFin" />
               </label>
               <div className={styles.buttonGroup}>
                 <button
