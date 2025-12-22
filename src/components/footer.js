@@ -5,9 +5,10 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContainer}>
-        Made by <Link
+        Made by&nbsp; 
+        <Link
           href="https://github.com/JoakinMacAuliffe"
-          style={{ textDecoration: "none", color: "inherit", textUnderlineOffset: "4px" }}
+          className={styles.hyperlink}
         >
           Joakin Mac Auliffe
         </Link>

@@ -11,3 +11,14 @@
   justify-content: center;
 }
 
+.hyperlink {
+  text-decoration: underline;
+  color: inherit;
+  transition: transform 0.2s ease-in-out, color 0.2s ease;
+}
+
+.hyperlink:hover::after {
+  transform: translateY(-3px);
+  color: #0070f3;
+}
+
