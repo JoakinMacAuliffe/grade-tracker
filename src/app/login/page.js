@@ -37,11 +37,7 @@ export default function Login() {
             name="password"
           />
 
-          {state?.error && (
-            <div className={styles.error}>
-              {state.error}
-            </div>
-          )}
+          {state?.error && <div className={styles.error}>{state.error}</div>}
 
           <div className={styles.spacer}></div>
           <div className={styles.spacer}></div>

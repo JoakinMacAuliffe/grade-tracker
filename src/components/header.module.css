@@ -1,5 +1,5 @@
 .header {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .headerContainer {
@@ -28,14 +28,13 @@
   font-weight: 600;
   font-size: 1rem;
   border: 2px solid transparent;
-  border-radius: 6px; 
+  border-radius: 6px;
   background-color: rgb(86, 86, 86);
   transition: all 0.2s ease;
   user-select: none;
 }
 
 .logOut:hover {
-
   transform: translateY(-1px);
   box-shadow: 2px 2px 0 1px black;
 }

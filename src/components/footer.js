@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContainer}>
-        Made by&nbsp; 
+        Made by&nbsp;
         <Link
           href="https://github.com/JoakinMacAuliffe"
           className={styles.hyperlink}

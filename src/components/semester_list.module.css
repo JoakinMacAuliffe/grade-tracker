@@ -139,29 +139,23 @@
 }
 
 .cancelButton {
-  background: rgba(255, 50, 50, 0.4);
+  background-color: rgb(82, 82, 82);
   color: white;
-  border-color: rgba(255, 100, 100, 0.5);
 }
 
 .cancelButton:hover {
-  background: rgba(255, 50, 50, 0.6);
   transform: translateY(-2px);
   box-shadow: 5px 5px 0 2px black;
-  border-color: rgba(255, 150, 150, 0.8);
 }
 
 .submitButton {
-  background: rgba(50, 255, 50, 0.4);
+  background-color: rgb(82, 82, 82);
   color: white;
-  border-color: rgba(100, 255, 100, 0.5);
 }
 
 .submitButton:hover {
-  background: rgba(50, 255, 50, 0.6);
   transform: translateY(-2px);
   box-shadow: 5px 5px 0 2px black;
-  border-color: rgba(150, 255, 150, 0.8);
 }
 
 .cancelButton:active,
@@ -171,12 +165,12 @@
 }
 
 @keyframes slideUp {
-  from { 
-    transform: translateY(20px); 
-    opacity: 0; 
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

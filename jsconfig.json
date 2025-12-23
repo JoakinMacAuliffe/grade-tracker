@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -32,9 +28,8 @@
     "**/*.tsx",
     "src/app/layout.js",
     "src/app/page.js",
-    "src/db/schema.js"
-, "drizzle.config.js"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "src/db/schema.js",
+    "drizzle.config.js"
+  ],
+  "exclude": ["node_modules"]
 }
