@@ -10,6 +10,7 @@ export default function RootLayout({ children }) {
       <body>
         <Header />
         <main>{children}</main>
+        <Analytics />
         <Footer />
       </body>
     </html>
