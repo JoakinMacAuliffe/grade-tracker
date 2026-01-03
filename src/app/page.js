@@ -2,6 +2,7 @@ import { db } from "../lib/db";
 import { semestres } from "../db/schema";
 import { desc } from "drizzle-orm";
 import { auth } from "../auth.js"
+import { redirect } from "next/navigation";
 import SemesterList from "../components/semester_list";
 
 const Home = async () => {
