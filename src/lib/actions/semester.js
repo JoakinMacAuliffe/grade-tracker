@@ -1,34 +1,34 @@
 "use server"; // uses server because we're working with the db
 
 import { revalidatePath } from "next/cache";
-import { semestres } from "../../db/schema.js";
+import { semesters } from "../../db/schema.js";
 import { db } from "../db.js";
 
 export async function createSemesterAction(prevState, formData) {
   try {
-    const numero = parseInt(formData.get("numero"));
-    const año = parseInt(formData.get("año"));
-    const fechaInicio = formData.get("fechaInicio") || null;
-    const fechaFin = formData.get("fechaFin") || null;
+    const number = parseInt(formData.get("number"));
+    const year = parseInt(formData.get("year"));
+    const startDate = formData.get("startDate") || null;
+    const endDate = formData.get("endDate") || null;
 
     // Automatically set if the semester is active or not
 
-    let activo = false;
+    let active = false;
 
-    if (fechaInicio && fechaFin) {
-      const inicio = new Date(fechaInicio).getTime();
-      const fin = new Date(fechaFin).getTime();
+    if (startDate && endDate) {
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
       const now = Date.now();
 
-      activo = now >= inicio && now <= fin;
+      active = now >= start && now <= end;
     }
 
-    await db.insert(semestres).values({
-      numero,
-      año,
-      fechaInicio,
-      fechaFin,
-      activo,
+    await db.insert(semesters).values({
+      number,
+      year,
+      startDate,
+      endDate,
+      active,
     });
 
     revalidatePath("/");

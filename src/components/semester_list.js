@@ -16,33 +16,33 @@ export default function SemesterList({ semesters }) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Mis Semestres</h1>
+        <h1 className={styles.title}>My Semesters</h1>
         <button
           className={styles.addButton}
           onClick={() => setIsOpen(true)}
         >
-          + Nuevo Semestre
+          + New Semester
         </button>
       </div>
 
       <div className={styles.semesterGrid}>
         {semesters.length === 0 ? (
           <p className={styles.emptyMessage}>
-            No hay semestres registrados.
+            No semesters registered. Create your first semester!
           </p>
         ) : (
           semesters.map((semester) => (
             <div key={semester.id} className={styles.semesterCard}>
               <div className={styles.semesterNumber}>
-                {semester.numero}° Semestre
+                Semester {semester.number}
               </div>
               <div className={styles.semesterYear}>{semester.año}</div>
               {semester.fechaInicio && semester.fechaFin && (
                 <div className={styles.semesterDates}>
-                  {new Date(semester.fechaInicio).toLocaleDateString('es-ES', { 
+                  {new Date(semester.startDate).toLocaleDateString('en-US', { 
                     month: 'short', 
                     day: 'numeric' 
-                  })} - {new Date(semester.fechaFin).toLocaleDateString('es-ES', { 
+                  })} - {new Date(semester.endDate).toLocaleDateString('en-US', { 
                     month: 'short', 
                     day: 'numeric' 
                   })}
@@ -57,23 +57,23 @@ export default function SemesterList({ semesters }) {
       {isOpen && (
         <div className={styles.semesterForm} onClick={() => setIsOpen(false)}>
           <div className={styles.formContainer} onClick={(e) => e.stopPropagation()}>
-            <h3>Nuevo Semestre</h3>
+            <h3>New Semester</h3>
             <form action={formAction}>
               <label>
-                Número de Semestre:
-                <input type="number" name="numero" required min="1" />
+                Semester Number:
+                <input type="number" name="number" required min="1" />
               </label>
               <label>
-                Año:
-                <input type="number" name="año" required min="2000" max="2100" />
+                Year:
+                <input type="number" name="year" required min="2000" max="2100" />
               </label>
               <label>
-                Fecha de Inicio:
-                <input type="date" name="fechaInicio" />
+                Start Date:
+                <input type="date" name="startDate" />
               </label>
               <label>
-                Fecha de Término:
-                <input type="date" name="fechaFin" />
+                End Date:
+                <input type="date" name="endDate" />
               </label>
               {state?.error && <p className={styles.errorMessage}>{state.error}</p>}
               <div className={styles.buttonGroup}>
@@ -82,10 +82,10 @@ export default function SemesterList({ semesters }) {
                   className={styles.cancelButton}
                   onClick={() => setIsOpen(false)}
                 >
-                  Cancelar
+                  Cancel
                 </button>
                 <button type="submit" className={styles.submitButton}>
-                  Guardar
+                  Save
                 </button>
               </div>
             </form>

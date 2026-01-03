@@ -1,5 +1,5 @@
 import { db } from "../lib/db";
-import { semestres } from "../db/schema";
+import { semesters } from "../db/schema";
 import { desc } from "drizzle-orm";
 import { auth } from "../auth.js"
 import { redirect } from "next/navigation";
@@ -15,8 +15,8 @@ const Home = async () => {
 
   const allSemesters = await db
     .select()
-    .from(semestres)
-    .orderBy(desc(semestres.año));
+    .from(semesters)
+    .orderBy(desc(semesters.year));
 
   return <SemesterList semesters={allSemesters} />;
 };

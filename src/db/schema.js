@@ -20,10 +20,10 @@ import { relations } from "drizzle-orm";
 
 // enum
 
-export const tipoSeccionEnum = pgEnum("tipo_seccion", [
-  "Cátedra",
-  "Laboratorio",
-  "Ayudantía",
+export const sectionTypeEnum = pgEnum("section_type", [
+  "Lecture",
+  "Laboratory",
+  "Tutorial",
 ]);
 
 // SQL tables
@@ -35,62 +35,62 @@ export const users = pgTable("users", {
   createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow(),
 });
 
-export const ramos = pgTable("ramos", {
+export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
-  titulo: text("titulo").notNull(),
-  codRamo: char("codRamo", { length: 8 }).notNull(),
-  creditos: integer("creditos").notNull(),
-  notaEximicion: decimal("notaEximicion", { precision: 2, scale: 1 }).default(
+  title: text("title").notNull(),
+  courseCode: char("courseCode", { length: 8 }).notNull(),
+  credits: integer("credits").notNull(),
+  exemptionGrade: decimal("exemptionGrade", { precision: 2, scale: 1 }).default(
     5.0,
   ),
-  semestreId: integer("semestreId").references(() => semestres.id, {
+  semesterId: integer("semesterId").references(() => semesters.id, {
     onDelete: "cascade",
   }),
 });
 
-export const secciones = pgTable("secciones", {
+export const sections = pgTable("sections", {
   id: serial("id").primaryKey(),
-  numero: smallint("numero").notNull(),
-  docente: text("docente"),
-  tipo: tipoSeccionEnum("tipo"),
-  ramoId: integer("ramoId").references(() => ramos.id, { onDelete: "cascade" }),
+  number: smallint("number").notNull(),
+  instructor: text("instructor"),
+  type: sectionTypeEnum("type"),
+  courseId: integer("courseId").references(() => courses.id, { onDelete: "cascade" }),
 });
 
-export const evaluaciones = pgTable(
-  "evaluaciones",
+export const assignments = pgTable(
+  "assignments",
   {
     id: serial("id").primaryKey(),
-    titulo: text("titulo").notNull(),
-    tipo: text("tipo"),
-    nota: decimal("nota", { precision: 2, scale: 1 }),
-    temario: text("temario"),
-    ponderacion: decimal("ponderacion", { precision: 3, scale: 2 }).notNull(),
-    ramoId: integer("ramoId")
+    title: text("title").notNull(),
+    type: text("type"),
+    grade: decimal("grade", { precision: 2, scale: 1 }),
+    syllabus: text("syllabus"),
+    weight: decimal("weight", { precision: 3, scale: 2 }).notNull(),
+    courseId: integer("courseId")
       .notNull()
-      .references(() => ramos.id, { onDelete: "cascade" }),
-    fecha: timestamp("fecha", { withTimezone: true }),
+      .references(() => courses.id, { onDelete: "cascade" }),
+    date: timestamp("date", { withTimezone: true }),
   },
   (table) => ({
     // make sure the grades are within limits
-    notaRange: check(
-      "nota_range",
-      sql`${table.nota} >= 1.0 AND ${table.nota} <= 7.0`,
+    gradeRange: check(
+      "grade_range",
+      sql`${table.grade} >= 1.0 AND ${table.grade} <= 7.0`,
     ),
     // same for weights
-    ponderacionRange: check(
-      "pond_range",
-      sql`${table.ponderacion} >= 0.0 AND ${table.ponderacion} <= 1.0`,
+    weightRange: check(
+      "weight_range",
+      sql`${table.weight} >= 0.0 AND ${table.weight} <= 1.0`,
     ),
   }),
 );
 
-export const semestres = pgTable("semestres", {
+export const semesters = pgTable("semesters", {
   id: serial("id").primaryKey(),
-  año: integer("año").notNull(),
-  activo: boolean("activo").default(false),
-  fechaInicio: date("fechaInicio"),
-  fechaFin: date("fechaFin"),
-  numero: smallint("numero"),
+  year: integer("year").notNull(),
+  active: boolean("active").default(false),
+  startDate: date("startDate"),
+  endDate: date("endDate"),
+  number: smallint("number"),
   userId: integer("userId").notNull().references(() => users.id, {
     onDelete: "cascade",
   }),
@@ -99,79 +99,79 @@ export const semestres = pgTable("semestres", {
 // SQL relations
 
 export const usersRelations = relations(users, ({ many }) => ({
-  semestres: many(semestres),
+  semesters: many(semesters),
 }));
 
-export const semestresRelations = relations(semestres, ({ one, many }) => ({
-  ramos: many(ramos),
+export const semestersRelations = relations(semesters, ({ one, many }) => ({
+  courses: many(courses),
   user: one(users, {
-    fields: [semestres.userId],
+    fields: [semesters.userId],
     references: [users.id],
   }),
 }));
 
-export const ramosRelations = relations(ramos, ({ one, many }) => ({
+export const coursesRelations = relations(courses, ({ one, many }) => ({
   // 1 semester has N courses
-  semestre: one(semestres, {
-    fields: [ramos.semestreId],
-    references: [semestres.id],
+  semester: one(semesters, {
+    fields: [courses.semesterId],
+    references: [semesters.id],
   }),
-  secciones: many(secciones),
-  evaluaciones: many(evaluaciones),
+  sections: many(sections),
+  assignments: many(assignments),
 }));
 
-export const seccionesRelations = relations(secciones, ({ one }) => ({
+export const sectionsRelations = relations(sections, ({ one }) => ({
   // 1 course has N sections
-  ramo: one(ramos, {
-    fields: [secciones.ramoId],
-    references: [ramos.id],
+  course: one(courses, {
+    fields: [sections.courseId],
+    references: [courses.id],
   }),
 }));
 
-export const evaluacionesRelations = relations(evaluaciones, ({ one }) => ({
+export const assignmentsRelations = relations(assignments, ({ one }) => ({
   // 1 course has N assignments
-  ramo: one(ramos, {
-    fields: [evaluaciones.ramoId],
-    references: [ramos.id],
+  course: one(courses, {
+    fields: [assignments.courseId],
+    references: [courses.id],
   }),
 }));
 
 // Validation with Zod
 
 export const insertUserSchema = createInsertSchema(users, {
-  email: z.string().email("Email inválido"),
+  email: z.string().email("Invalid email"),
   passwordHash: z.string().min(1),
 });
 
-export const insertRamoSchema = createInsertSchema(ramos, {
-  titulo: z.string().min(1, "Título requerido"),
-  codRamo: z.string().length(8, "El código debe tener 8 dígitos"),
-  creditos: z.number().int().positive("Los créditos deben ser positivos"),
-  notaEximicion: z.number().min(1.0).max(7.0).optional(),
+export const insertCourseSchema = createInsertSchema(courses, {
+  title: z.string().min(1, "Title required"),
+  courseCode: z.string().length(8, "Code must be 8 characters"),
+  credits: z.number().int().positive("Credits must be positive"),
+  exemptionGrade: z.number().min(1.0).max(7.0).optional(),
 });
 
-export const insertSeccionSchema = createInsertSchema(secciones, {
-  numero: z.number().int().positive(),
-  docente: z.string().optional(),
-  tipo: z.enum(["Cátedra", "Laboratorio", "Ayudantía"]),
+export const insertSectionSchema = createInsertSchema(sections, {
+  number: z.number().int().positive(),
+  instructor: z.string().optional(),
+  type: z.enum(["Lecture", "Laboratory", "Tutorial"]),
 });
 
-export const insertEvaluacionSchema = createInsertSchema(evaluaciones, {
-  titulo: z.string().min(1, "Título requerido"),
-  nota: z.coerce.number().min(1.0).max(7.0).optional(),
-  ponderacion: z.coerce.number().min(0.0).max(1.0),
+export const insertAssignmentSchema = createInsertSchema(assignments, {
+  title: z.string().min(1, "Title required"),
+  grade: z.coerce.number().min(1.0).max(7.0).optional(),
+  weight: z.coerce.number().min(0.0).max(1.0),
 });
 
-export const insertSemestreSchema = createInsertSchema(semestres, {
-  numero: z.number().int().positive(),
-  año: z.number().int().min(2000).max(2100),
-  activo: z.boolean().optional(),
+export const insertSemesterSchema = createInsertSchema(semesters, {
+  number: z.number().int().positive(),
+  year: z.number().int().min(2000).max(2100),
+  active: z.boolean().optional(),
 });
 
 // Select schemas (for reading data)
 
 export const selectUserSchema = createSelectSchema(users);
-export const selectRamoSchema = createSelectSchema(ramos);
-export const selectSeccionSchema = createSelectSchema(secciones);
-export const selectEvaluacionSchema = createSelectSchema(evaluaciones);
-export const selectSemestreSchema = createSelectSchema(semestres);
+export const selectCourseSchema = createSelectSchema(courses);
+export const selectSectionSchema = createSelectSchema(sections);
+export const selectAssignmentSchema = createSelectSchema(assignments);
+export const selectSemesterSchema = createSelectSchema(semesters);
