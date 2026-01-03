@@ -9,7 +9,7 @@ export default async function Header() {
     <header className={styles.header}>
       <div className={styles.headerContainer}>
         {loggedIn && <LogoutButton />}
-        <div className={styles.headerTitle}>Grade Tracker</div>
+        <div className={styles.headerTitle}>Grade Vault</div>
       </div>
     </header>
   );
