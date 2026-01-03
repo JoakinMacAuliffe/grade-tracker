@@ -1,0 +1,149 @@
+/* Container & Layout */
+.pageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.loginContainer {
+  padding: 40px;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 2px solid black;
+  border-radius: 12px;
+  box-shadow: 0 0 20px gray;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Typography */
+.coolerFont {
+  font-family: "Geologica", sans-serif;
+  text-shadow: 0 2px 10px black;
+  color: white;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+/* Form */
+.loginForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  text-align: left;
+  font-size: 14px;
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
+
+.textInput {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 black;
+  font-size: 16px;
+  color: white;
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.textInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.textInput:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 4px 4px 0 black, 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Button */
+.submitButton {
+  width: 100%;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 black;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.submitButton:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 black;
+}
+
+.submitButton:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 black;
+}
+
+/* Error Message */
+.error {
+  color: #ff4444;
+  background-color: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 14px;
+  margin: 0 0 10px 0;
+  text-shadow: 0 1px 2px black;
+  text-align: center;
+}
+
+/* Register Link */
+.registerLink {
+  margin-top: 30px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.link {
+  color: white;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+  font-weight: 600;
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .loginContainer {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .submitButton {
+    font-size: 18px;
+  }
+}

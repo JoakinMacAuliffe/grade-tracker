@@ -33,7 +33,7 @@ export const users = pgTable("users", {
   email: text("email").unique().notNull(),
   passwordHash: text("passwordHash").notNull(),
   createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow(),
-})
+});
 
 export const ramos = pgTable("ramos", {
   id: serial("id").primaryKey(),
@@ -140,7 +140,6 @@ export const evaluacionesRelations = relations(evaluaciones, ({ one }) => ({
 
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email("Email inválido"),
-  name: z.string().min(1, "Nombre requerido"),
   passwordHash: z.string().min(1),
 });
 

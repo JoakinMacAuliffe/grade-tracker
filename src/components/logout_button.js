@@ -1,11 +1,11 @@
 "use client";
 
 import styles from "./header.module.css";
-import { logoutAction } from "../lib/actions/auth";
+import { signOutAction } from "../lib/actions/auth";
 
 export default function LogoutButton() {
   const handleLogout = async () => {
-    await logoutAction();
+    await signOutAction();
   };
 
   return (
