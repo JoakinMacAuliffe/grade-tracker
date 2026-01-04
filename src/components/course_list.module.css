@@ -235,3 +235,40 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.autocompleteWrapper {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid white;
+  border-radius: 8px;
+  margin-top: 0.25rem;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  z-index: 10;
+}
+
+.suggestions li {
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.suggestions li:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.suggestions li strong {
+  color: #ffffff;
+  font-weight: 700;
+}
