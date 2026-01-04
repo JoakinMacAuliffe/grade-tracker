@@ -1,8 +1,8 @@
 import { auth } from "../auth.js";
 
 export async function isLoggedIn() {
-    const session = await auth();
-    return !!session?.user;
+  const session = await auth();
+  return !!session?.user;
 }
 
 export async function getCurrentUser() {

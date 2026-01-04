@@ -9,7 +9,7 @@
 
 /* Add a semi-transparent background overlay for better contrast */
 .container::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;

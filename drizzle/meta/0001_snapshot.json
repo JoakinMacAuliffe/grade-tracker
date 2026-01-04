@@ -63,12 +63,8 @@
           "name": "evaluaciones_ramoId_ramos_id_fk",
           "tableFrom": "evaluaciones",
           "tableTo": "ramos",
-          "columnsFrom": [
-            "ramoId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["ramoId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -136,12 +132,8 @@
           "name": "ramos_semestreId_semestres_id_fk",
           "tableFrom": "ramos",
           "tableTo": "semestres",
-          "columnsFrom": [
-            "semestreId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["semestreId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -194,12 +186,8 @@
           "name": "secciones_ramoId_ramos_id_fk",
           "tableFrom": "secciones",
           "tableTo": "ramos",
-          "columnsFrom": [
-            "ramoId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["ramoId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -297,9 +285,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -311,11 +297,7 @@
     "public.tipo_seccion": {
       "name": "tipo_seccion",
       "schema": "public",
-      "values": [
-        "Cátedra",
-        "Laboratorio",
-        "Ayudantía"
-      ]
+      "values": ["Cátedra", "Laboratorio", "Ayudantía"]
     }
   },
   "schemas": {},

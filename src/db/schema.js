@@ -41,7 +41,7 @@ export const courses = pgTable("courses", {
   courseCode: char("courseCode", { length: 8 }).notNull(),
   credits: integer("credits").notNull(),
   exemptionGrade: decimal("exemptionGrade", { precision: 2, scale: 1 }).default(
-    5.0,
+    5.0
   ),
   semesterId: integer("semesterId").references(() => semesters.id, {
     onDelete: "cascade",
@@ -53,7 +53,9 @@ export const sections = pgTable("sections", {
   number: smallint("number").notNull(),
   instructor: text("instructor"),
   type: sectionTypeEnum("type"),
-  courseId: integer("courseId").references(() => courses.id, { onDelete: "cascade" }),
+  courseId: integer("courseId").references(() => courses.id, {
+    onDelete: "cascade",
+  }),
 });
 
 export const assignments = pgTable(
@@ -74,14 +76,14 @@ export const assignments = pgTable(
     // make sure the grades are within limits
     gradeRange: check(
       "grade_range",
-      sql`${table.grade} >= 1.0 AND ${table.grade} <= 7.0`,
+      sql`${table.grade} >= 1.0 AND ${table.grade} <= 7.0`
     ),
     // same for weights
     weightRange: check(
       "weight_range",
-      sql`${table.weight} >= 0.0 AND ${table.weight} <= 1.0`,
+      sql`${table.weight} >= 0.0 AND ${table.weight} <= 1.0`
     ),
-  }),
+  })
 );
 
 export const semesters = pgTable("semesters", {
@@ -91,9 +93,11 @@ export const semesters = pgTable("semesters", {
   startDate: date("startDate"),
   endDate: date("endDate"),
   number: smallint("number"),
-  userId: integer("userId").notNull().references(() => users.id, {
-    onDelete: "cascade",
-  }),
+  userId: integer("userId")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
 });
 
 // SQL relations

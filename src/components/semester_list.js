@@ -7,7 +7,10 @@ import styles from "./semester_list.module.css";
 
 export default function SemesterList({ semesters }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [state, formAction, isPending] = useActionState(createSemesterAction, null);
+  const [state, formAction, isPending] = useActionState(
+    createSemesterAction,
+    null
+  );
 
   useEffect(() => {
     if (state?.success) {
@@ -94,8 +97,8 @@ export default function SemesterList({ semesters }) {
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className={styles.submitButton}
                   disabled={isPending}
                 >

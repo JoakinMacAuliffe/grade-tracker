@@ -1,12 +1,11 @@
 import { db } from "../lib/db";
 import { semesters } from "../db/schema";
 import { desc } from "drizzle-orm";
-import { auth } from "../auth.js"
+import { auth } from "../auth.js";
 import { redirect } from "next/navigation";
 import SemesterList from "../components/semester_list";
 
 const Home = async () => {
-  
   const session = await auth();
 
   if (!session?.user) {

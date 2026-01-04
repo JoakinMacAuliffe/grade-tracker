@@ -63,12 +63,8 @@
           "name": "assignments_courseId_courses_id_fk",
           "tableFrom": "assignments",
           "tableTo": "courses",
-          "columnsFrom": [
-            "courseId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["courseId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -136,12 +132,8 @@
           "name": "courses_semesterId_semesters_id_fk",
           "tableFrom": "courses",
           "tableTo": "semesters",
-          "columnsFrom": [
-            "semesterId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["semesterId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -194,12 +186,8 @@
           "name": "sections_courseId_courses_id_fk",
           "tableFrom": "sections",
           "tableTo": "courses",
-          "columnsFrom": [
-            "courseId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["courseId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -264,12 +252,8 @@
           "name": "semesters_userId_users_id_fk",
           "tableFrom": "semesters",
           "tableTo": "users",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -317,9 +301,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -331,11 +313,7 @@
     "public.section_type": {
       "name": "section_type",
       "schema": "public",
-      "values": [
-        "Lecture",
-        "Laboratory",
-        "Tutorial"
-      ]
+      "values": ["Lecture", "Laboratory", "Tutorial"]
     }
   },
   "schemas": {},

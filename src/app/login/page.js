@@ -1,6 +1,6 @@
 // Every HTML line of code in this file is crap (i reused this login screen from my first webdev class...)
 
-// UPDATE: I gave up on it and i'll just redo it with AI 
+// UPDATE: I gave up on it and i'll just redo it with AI
 
 "use client";
 
@@ -15,12 +15,13 @@ export default function Login() {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.loginContainer}>
-        <h1 className={`${styles.coolerFont} ${styles.title}`}>
-          Log in
-        </h1>
+        <h1 className={`${styles.coolerFont} ${styles.title}`}>Log in</h1>
 
         <form action={formAction} className={styles.loginForm}>
-          <label className={`${styles.coolerFont} ${styles.label}`} htmlFor="email">
+          <label
+            className={`${styles.coolerFont} ${styles.label}`}
+            htmlFor="email"
+          >
             Email
           </label>
           <input
@@ -33,7 +34,10 @@ export default function Login() {
             placeholder="your@email.com"
           />
 
-          <label className={`${styles.coolerFont} ${styles.label}`} htmlFor="password">
+          <label
+            className={`${styles.coolerFont} ${styles.label}`}
+            htmlFor="password"
+          >
             Password
           </label>
           <input
@@ -57,7 +61,10 @@ export default function Login() {
         </form>
 
         <div className={`${styles.coolerFont} ${styles.registerLink}`}>
-          Don't have an account? <Link href="/register" className={styles.link}>Register</Link>
+          Don't have an account?{" "}
+          <Link href="/register" className={styles.link}>
+            Register
+          </Link>
         </div>
       </div>
     </div>
