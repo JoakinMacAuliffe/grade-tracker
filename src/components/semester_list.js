@@ -55,7 +55,8 @@ export default function SemesterList({ semesters }) {
                   })}
                 </div>
               )}
-            </Link>))
+            </Link>
+          ))
         )}
       </div>
 
