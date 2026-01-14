@@ -1,6 +1,6 @@
 import { db } from "../lib/db";
 import { semesters } from "../db/schema";
-import { desc, eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { auth } from "../auth.js";
 import { redirect } from "next/navigation";
 import SemesterList from "../components/semester_list";
@@ -19,7 +19,7 @@ const Home = async () => {
     .select()
     .from(semesters)
     .where(eq(semesters.userId, userId))
-    .orderBy(desc(semesters.year));
+    .orderBy(asc(semesters.number));
 
   return <SemesterList semesters={userSemesters} />;
 };
