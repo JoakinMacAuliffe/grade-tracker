@@ -43,6 +43,7 @@ export const courses = pgTable("courses", {
   exemptionGrade: decimal("exemptionGrade", { precision: 2, scale: 1 }).default(
     5.0
   ),
+  examGrade: decimal("examGrade", { precision: 2, scale: 1 }),
   semesterId: integer("semesterId").references(() => semesters.id, {
     onDelete: "cascade",
   }),
@@ -100,6 +101,37 @@ export const semesters = pgTable("semesters", {
     }),
 });
 
+export const evaluationGroups = pgTable("evaluationGroups", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  totalWeight: decimal("totalWeight", { precision: 3, scale: 2 }).notNull(),
+  courseId: integer("courseId")
+    .notNull()
+    .references(() => courses.id, { onDelete: "cascade" }),
+});
+
+export const evaluations = pgTable(
+  "evaluations",
+  {
+    id: serial("id").primaryKey(),
+    title: text("title").notNull(),
+    grade: decimal("grade", { precision: 2, scale: 1 }),
+    weight: decimal("weight", { precision: 3, scale: 2 }),
+    groupId: integer("groupId").references(() => evaluationGroups.id, {
+      onDelete: "cascade",
+    }),
+    courseId: integer("courseId")
+      .notNull()
+      .references(() => courses.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    gradeRange: check(
+      "eval_grade_range",
+      sql`${table.grade} IS NULL OR (${table.grade} >= 1.0 AND ${table.grade} <= 7.0)`
+    ),
+  })
+);
+
 // SQL relations
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -122,6 +154,8 @@ export const coursesRelations = relations(courses, ({ one, many }) => ({
   }),
   sections: many(sections),
   assignments: many(assignments),
+  evaluationGroups: many(evaluationGroups),
+  evaluations: many(evaluations),
 }));
 
 export const sectionsRelations = relations(sections, ({ one }) => ({
@@ -137,6 +171,25 @@ export const assignmentsRelations = relations(assignments, ({ one }) => ({
   course: one(courses, {
     fields: [assignments.courseId],
     references: [courses.id],
+  }),
+}));
+
+export const evaluationGroupsRelations = relations(evaluationGroups, ({ one, many }) => ({
+  course: one(courses, {
+    fields: [evaluationGroups.courseId],
+    references: [courses.id],
+  }),
+  evaluations: many(evaluations),
+}));
+
+export const evaluationsRelations = relations(evaluations, ({ one }) => ({
+  course: one(courses, {
+    fields: [evaluations.courseId],
+    references: [courses.id],
+  }),
+  group: one(evaluationGroups, {
+    fields: [evaluations.groupId],
+    references: [evaluationGroups.id],
   }),
 }));
 
@@ -179,3 +232,14 @@ export const selectCourseSchema = createSelectSchema(courses);
 export const selectSectionSchema = createSelectSchema(sections);
 export const selectAssignmentSchema = createSelectSchema(assignments);
 export const selectSemesterSchema = createSelectSchema(semesters);
+
+export const insertEvaluationGroupSchema = createInsertSchema(evaluationGroups, {
+  name: z.string().min(1, "Name required"),
+  totalWeight: z.coerce.number().min(0.01).max(1.0),
+});
+
+export const insertEvaluationSchema = createInsertSchema(evaluations, {
+  title: z.string().min(1, "Title required"),
+  grade: z.coerce.number().min(1.0).max(7.0).optional().nullable(),
+  weight: z.coerce.number().min(0.01).max(1.0).optional().nullable(),
+});
