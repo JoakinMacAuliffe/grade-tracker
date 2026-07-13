@@ -79,22 +79,6 @@ export default function CourseList({ semester, courses }) {
               </div>
             </div>
           </div>
-
-          {semester.startDate && semester.endDate && (
-            <div className={styles.semesterDuration}>
-              <span className={styles.durationText}>
-                {new Date(semester.startDate).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })}{" "}
-                -{" "}
-                {new Date(semester.endDate).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })}
-              </span>
-            </div>
-          )}
         </div>
 
         <Link href="/" className={styles.backButton}> ←  Semester list</Link>

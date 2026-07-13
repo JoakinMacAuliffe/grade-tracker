@@ -9,27 +9,10 @@ export async function createSemesterAction(prevState, formData) {
   try {
     const number = parseInt(formData.get("number"));
     const year = parseInt(formData.get("year"));
-    const startDate = formData.get("startDate") || null;
-    const endDate = formData.get("endDate") || null;
     const userId = await getCurrentUserId();
-
-    // Automatically set if the semester is active or not
-
-    let active = false;
-
-    if (startDate && endDate) {
-      const start = new Date(startDate).getTime();
-      const end = new Date(endDate).getTime();
-      const now = Date.now();
-
-      active = now >= start && now <= end;
-    }
 
     await db.insert(semesters).values({
       year,
-      active,
-      startDate,
-      endDate,
       number,
       userId,
     });

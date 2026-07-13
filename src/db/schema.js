@@ -90,9 +90,6 @@ export const assignments = pgTable(
 export const semesters = pgTable("semesters", {
   id: serial("id").primaryKey(),
   year: integer("year").notNull(),
-  active: boolean("active").default(false),
-  startDate: date("startDate"),
-  endDate: date("endDate"),
   number: smallint("number"),
   userId: integer("userId")
     .notNull()
@@ -220,9 +217,8 @@ export const insertAssignmentSchema = createInsertSchema(assignments, {
 });
 
 export const insertSemesterSchema = createInsertSchema(semesters, {
-  number: z.number().int().positive(),
-  year: z.number().int().min(2000).max(2100),
-  active: z.boolean().optional(),
+  year: z.coerce.number().min(2000).max(2100),
+  number: z.coerce.number().min(1).max(2),
 });
 
 // Select schemas (for reading data)

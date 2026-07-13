@@ -42,19 +42,6 @@ export default function SemesterList({ semesters }) {
                 Semester {semester.number}
               </div>
               <div className={styles.semesterYear}>{semester.year}</div>
-              {semester.startDate && semester.endDate && (
-                <div className={styles.semesterDates}>
-                  {new Date(semester.startDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}{" "}
-                  -{" "}
-                  {new Date(semester.endDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </div>
-              )}
             </Link>
           ))
         )}
@@ -81,14 +68,6 @@ export default function SemesterList({ semesters }) {
                   min="2000"
                   max="2100"
                 />
-              </label>
-              <label>
-                Start Date:
-                <input type="date" name="startDate" />
-              </label>
-              <label>
-                End Date:
-                <input type="date" name="endDate" />
               </label>
               {state?.error && (
                 <p className={styles.errorMessage}>{state.error}</p>
