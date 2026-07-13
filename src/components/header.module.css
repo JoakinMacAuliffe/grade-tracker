@@ -1,4 +1,7 @@
+/* ─── Header shell ───────────────────────────────────────────── */
 .header {
+  position: relative;
+  z-index: 100;
   flex-shrink: 0;
 }
 
@@ -7,58 +10,65 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 6vh;
-  border: 3px solid gray;
-  border-top: 0 solid black;
-  box-shadow: 4px 4px 0 3px black;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  backdrop-filter: blur(10px);
+  height: 58px;
+
+  background: rgba(8, 6, 22, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4),
+              0 0 0 1px rgba(255,255,255,0.04) inset;
 }
 
+/* ─── Logo / Title ───────────────────────────────────────────── */
+.headerTitle {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  transition: filter var(--transition), transform var(--transition);
+  user-select: none;
+}
+
+.headerTitle:hover {
+  filter: brightness(0.85);
+  transform: translateY(-1px);
+}
+
+/* ─── Log Out button ─────────────────────────────────────────── */
 .logOutContainer {
   position: absolute;
-  left: 0.7rem;
+  left: 1rem;
 }
 
 .logOut {
-  padding: 0.3rem 1rem;
-  cursor: pointer;
-  color: white;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  font-size: 1rem;
-  border: 2px solid transparent;
-  border-radius: 6px;
-  background-color: rgb(86, 86, 86);
-  transition: all 0.2s ease;
+  font-family: "Geologica", sans-serif;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
   user-select: none;
 }
 
 .logOut:hover {
+  color: #fff;
+  background: rgba(230, 70, 70, 0.18);
+  border-color: rgba(230, 70, 70, 0.4);
+  box-shadow: 0 0 12px rgba(230, 70, 70, 0.2);
   transform: translateY(-1px);
-  box-shadow: 2px 2px 0 1px black;
 }
 
 .logOut:active {
   transform: translateY(0);
-  box-shadow: 1px 1px 0 1px black;
-}
-
-.headerTitle {
-  font-size: 26px;
-  font-weight: 800;
-  text-align: center;
-  color: white;
-  text-shadow: 0 0 10px rgba(215, 215, 215, 0.8);
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.5s ease;
-}
-
-.headerTitle:hover {
-  font-size: 28px;
-  transform: translateY(-1px);
-  text-shadow: 0 2px 10px rgb(255, 255, 255); 
+  box-shadow: none;
 }
