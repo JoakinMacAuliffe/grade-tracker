@@ -159,6 +159,45 @@
   color: #ffffff;
 }
 
+/* ─── Header action group ────────────────────────────────────── */
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ─── Import JSON button ─────────────────────────────────────── */
+.importButton {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: "Geologica", sans-serif;
+  cursor: pointer;
+  border: 1px solid rgba(130, 100, 255, 0.35);
+  border-radius: var(--radius-sm);
+  background: rgba(110, 80, 220, 0.1);
+  color: rgba(180, 155, 255, 0.9);
+  transition: all var(--transition);
+  user-select: none;
+}
+
+.importButton:hover {
+  background: rgba(110, 80, 220, 0.22);
+  border-color: rgba(150, 120, 255, 0.55);
+  color: rgb(210, 190, 255);
+  box-shadow: 0 4px 16px rgba(110, 80, 220, 0.2);
+  transform: translateY(-1px);
+}
+
+.importButton:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
 /* ─── Add button ─────────────────────────────────────────────── */
 .addButton {
   padding: 0.42rem 1rem;
@@ -186,6 +225,7 @@
   transform: translateY(0);
   box-shadow: none;
 }
+
 
 /* ─── Course grid ────────────────────────────────────────────── */
 .courseGrid {
@@ -512,4 +552,184 @@
   .courseGrid {
     grid-template-columns: 1fr;
   }
+
+  .jsonModal {
+    max-width: 100% !important;
+  }
 }
+
+/* ─── Close button (shared by modals) ────────────────────────── */
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+/* ─── JSON import modal overrides ────────────────────────────── */
+.jsonModal {
+  max-width: 680px;
+  position: relative;
+}
+
+.jsonModalTitle {
+  margin: 0 0 0.3rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+}
+
+.jsonModalSubtitle {
+  margin: 0 0 1rem;
+  font-size: 0.87rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ─── Collapsible example ────────────────────────────────────── */
+.jsonExample {
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.jsonExampleToggle {
+  padding: 0.55rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.04);
+  transition: background var(--transition), color var(--transition);
+}
+
+.jsonExampleToggle::-webkit-details-marker { display: none; }
+
+.jsonExample[open] .jsonExampleToggle {
+  color: var(--text);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.jsonExampleToggle:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
+
+.jsonExampleCode {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  font-size: 0.77rem;
+  font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+  color: rgba(190, 230, 190, 0.85);
+  background: rgba(5, 15, 5, 0.5);
+  overflow-x: auto;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+/* ─── JSON textarea field ────────────────────────────────────── */
+.jsonField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.jsonLabel {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.jsonTextarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.78rem;
+  font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+  font-weight: 400;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  outline: none;
+  resize: vertical;
+  min-height: 180px;
+  line-height: 1.55;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.jsonTextarea::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.jsonTextarea:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+.jsonTextareaError {
+  border-color: rgba(255, 80, 80, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(255, 60, 60, 0.08) !important;
+}
+
+.jsonTextareaOk {
+  border-color: rgba(60, 200, 100, 0.45) !important;
+  box-shadow: 0 0 0 3px rgba(40, 180, 80, 0.07) !important;
+}
+
+/* ─── JSON status messages ───────────────────────────────────── */
+.jsonErrorMsg {
+  font-size: 0.82rem;
+  color: #ff8080;
+  margin: 0;
+  padding: 0.5rem 0.8rem;
+  background: rgba(255, 60, 60, 0.1);
+  border: 1px solid rgba(255, 60, 60, 0.22);
+  border-radius: var(--radius-sm);
+}
+
+.jsonPreviewMsg {
+  font-size: 0.82rem;
+  color: rgb(100, 210, 130);
+  margin: 0;
+  padding: 0.5rem 0.8rem;
+  background: rgba(40, 180, 80, 0.1);
+  border: 1px solid rgba(40, 180, 80, 0.22);
+  border-radius: var(--radius-sm);
+}
+
+.jsonSuccessMsg {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgb(120, 220, 150);
+  margin: 0;
+  padding: 0.5rem 0.8rem;
+  background: rgba(40, 180, 80, 0.12);
+  border: 1px solid rgba(40, 180, 80, 0.3);
+  border-radius: var(--radius-sm);
+  animation: fadeInUp 0.3s ease both;
+}
+
