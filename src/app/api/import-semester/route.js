@@ -192,41 +192,39 @@ export async function POST(request) {
       });
     }
 
-    // ── Insert everything in one transaction ──────────────────────
-    await db.transaction(async (tx) => {
-      for (const { course: courseData, standaloneEvals, groupDefs } of validated) {
-        const [inserted] = await tx
-          .insert(courses)
-          .values(courseData)
-          .returning({ id: courses.id });
+    // ── Insert sequentially ──────────────────────
+    for (const { course: courseData, standaloneEvals, groupDefs } of validated) {
+      const [inserted] = await db
+        .insert(courses)
+        .values(courseData)
+        .returning({ id: courses.id });
 
-        const courseId = inserted.id;
+      const courseId = inserted.id;
 
-        // Standalone evaluations
-        if (standaloneEvals.length > 0) {
-          await tx.insert(evaluations).values(
-            standaloneEvals.map((ev) => ({ ...ev, groupId: null, courseId }))
-          );
-        }
-
-        // Groups + their items
-        for (const { groupRow, items } of groupDefs) {
-          const [insertedGroup] = await tx
-            .insert(evaluationGroups)
-            .values({ ...groupRow, courseId })
-            .returning({ id: evaluationGroups.id });
-
-          await tx.insert(evaluations).values(
-            items.map((item) => ({
-              ...item,
-              weight: null,
-              groupId: insertedGroup.id,
-              courseId,
-            }))
-          );
-        }
+      // Standalone evaluations
+      if (standaloneEvals.length > 0) {
+        await db.insert(evaluations).values(
+          standaloneEvals.map((ev) => ({ ...ev, groupId: null, courseId }))
+        );
       }
-    });
+
+      // Groups + their items
+      for (const { groupRow, items } of groupDefs) {
+        const [insertedGroup] = await db
+          .insert(evaluationGroups)
+          .values({ ...groupRow, courseId })
+          .returning({ id: evaluationGroups.id });
+
+        await db.insert(evaluations).values(
+          items.map((item) => ({
+            ...item,
+            weight: null,
+            groupId: insertedGroup.id,
+            courseId,
+          }))
+        );
+      }
+    }
 
     revalidatePath(`/semester/${semesterId}`);
 

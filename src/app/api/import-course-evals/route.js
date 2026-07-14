@@ -164,33 +164,32 @@ export async function POST(request) {
       );
     }
 
-    // ── Insert in a transaction ────────────────────────────────────
+    // ── Insert sequentially ────────────────────────────────────
     let importedCount = 0;
-    await db.transaction(async (tx) => {
-      // Standalone evaluations
-      if (standaloneRows.length > 0) {
-        await tx.insert(evaluations).values(standaloneRows);
-        importedCount += standaloneRows.length;
-      }
+    
+    // Standalone evaluations
+    if (standaloneRows.length > 0) {
+      await db.insert(evaluations).values(standaloneRows);
+      importedCount += standaloneRows.length;
+    }
 
-      // Groups + their items
-      for (const { groupRow, items } of groupDefs) {
-        const [inserted] = await tx
-          .insert(evaluationGroups)
-          .values(groupRow)
-          .returning({ id: evaluationGroups.id });
+    // Groups + their items
+    for (const { groupRow, items } of groupDefs) {
+      const [inserted] = await db
+        .insert(evaluationGroups)
+        .values(groupRow)
+        .returning({ id: evaluationGroups.id });
 
-        await tx.insert(evaluations).values(
-          items.map((item) => ({
-            ...item,
-            weight: null,   // weight is on the group, not individual items
-            groupId: inserted.id,
-            courseId,
-          }))
-        );
-        importedCount += items.length;
-      }
-    });
+      await db.insert(evaluations).values(
+        items.map((item) => ({
+          ...item,
+          weight: null,   // weight is on the group, not individual items
+          groupId: inserted.id,
+          courseId,
+        }))
+      );
+      importedCount += items.length;
+    }
 
     revalidatePath(`/semester/${semesterId}/course/${courseId}`);
 
