@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../lib/db.js";
-import { courses, evaluations, semesters } from "../../../db/schema.js";
+import { courses, evaluations, evaluationGroups, semesters } from "../../../db/schema.js";
 import { eq } from "drizzle-orm";
 import { auth } from "../../../auth.js";
 import { getCurrentUserId } from "../../../lib/auth-helpers.js";
@@ -29,21 +29,19 @@ function validateWeight(w) {
  *   semesterId: number,
  *   courses: [
  *     {
- *       code: string,           // 8 chars max, e.g. "CBM-1000"
+ *       code: string,            // 8 chars max, e.g. "CBM-1000"
  *       title: string,
  *       credits: number,
  *       exemptionGrade?: number, // default 5.0
  *       examGrade?: number | null,
- *       evaluations?: [
- *         {
- *           title: string,
- *           weight: number,      // 0-100 percent
- *           grade?: number | null // 1.0-7.0 or omit/null
- *         }
- *       ]
+ *       evaluations?: Array<StandaloneEval | GroupEval>
  *     }
  *   ]
  * }
+ *
+ * StandaloneEval: { title, weight (0-100), grade? }
+ * GroupEval:      { name, totalWeight (0-100), items: [{ title, grade? }] }
+ * Detection: if entry has "items" array → group; otherwise → standalone.
  */
 export async function POST(request) {
   try {
@@ -99,30 +97,77 @@ export async function POST(request) {
       if (examGradeResult?.error)
         return NextResponse.json({ error: `${prefix}: ${examGradeResult.error}` }, { status: 400 });
 
-      const evalList = [];
+      // ── Parse evaluations (mixed standalone + groups) ─────────────
+      const standaloneEvals = [];
+      const groupDefs = [];
+
       if (Array.isArray(c.evaluations)) {
         let totalWeight = 0;
+
         for (let ei = 0; ei < c.evaluations.length; ei++) {
-          const ev = c.evaluations[ei];
-          const evPrefix = `${prefix} evaluation #${ei + 1} ("${ev.title ?? "?"}")`;
+          const entry = c.evaluations[ei];
+          const isGroup = Array.isArray(entry.items);
 
-          if (!ev.title || typeof ev.title !== "string")
-            return NextResponse.json({ error: `${evPrefix}: "title" is required` }, { status: 400 });
+          if (isGroup) {
+            const evPrefix = `${prefix} group #${ei + 1} ("${entry.name ?? "?"}")`;
 
-          const weightResult = validateWeight(ev.weight);
-          if (weightResult?.error)
-            return NextResponse.json({ error: `${evPrefix}: ${weightResult.error}` }, { status: 400 });
+            if (!entry.name || typeof entry.name !== "string" || !entry.name.trim())
+              return NextResponse.json({ error: `${evPrefix}: "name" is required` }, { status: 400 });
 
-          const gradeResult = validateGrade(ev.grade ?? null);
-          if (gradeResult?.error)
-            return NextResponse.json({ error: `${evPrefix}: ${gradeResult.error}` }, { status: 400 });
+            const weightResult = validateWeight(entry.totalWeight);
+            if (weightResult?.error)
+              return NextResponse.json({ error: `${evPrefix}: ${weightResult.error}` }, { status: 400 });
 
-          totalWeight += weightResult;
-          evalList.push({
-            title: ev.title.trim(),
-            weight: weightResult.toString(),
-            grade: gradeResult !== null ? gradeResult.toString() : null,
-          });
+            if (!Array.isArray(entry.items) || entry.items.length === 0)
+              return NextResponse.json({ error: `${evPrefix}: "items" must be a non-empty array` }, { status: 400 });
+
+            const validatedItems = [];
+            for (let j = 0; j < entry.items.length; j++) {
+              const item = entry.items[j];
+              const iPrefix = `${evPrefix} item #${j + 1} ("${item.title ?? "?"}")`;
+
+              if (!item.title || typeof item.title !== "string" || !item.title.trim())
+                return NextResponse.json({ error: `${iPrefix}: "title" is required` }, { status: 400 });
+
+              const gradeResult = validateGrade(item.grade ?? null);
+              if (gradeResult?.error)
+                return NextResponse.json({ error: `${iPrefix}: ${gradeResult.error}` }, { status: 400 });
+
+              validatedItems.push({
+                title: item.title.trim(),
+                grade: gradeResult !== null ? gradeResult.toString() : null,
+              });
+            }
+
+            totalWeight += weightResult;
+            groupDefs.push({
+              groupRow: {
+                name: entry.name.trim(),
+                totalWeight: weightResult.toString(),
+              },
+              items: validatedItems,
+            });
+          } else {
+            const evPrefix = `${prefix} evaluation #${ei + 1} ("${entry.title ?? "?"}")`;
+
+            if (!entry.title || typeof entry.title !== "string")
+              return NextResponse.json({ error: `${evPrefix}: "title" is required` }, { status: 400 });
+
+            const weightResult = validateWeight(entry.weight);
+            if (weightResult?.error)
+              return NextResponse.json({ error: `${evPrefix}: ${weightResult.error}` }, { status: 400 });
+
+            const gradeResult = validateGrade(entry.grade ?? null);
+            if (gradeResult?.error)
+              return NextResponse.json({ error: `${evPrefix}: ${gradeResult.error}` }, { status: 400 });
+
+            totalWeight += weightResult;
+            standaloneEvals.push({
+              title: entry.title.trim(),
+              weight: weightResult.toString(),
+              grade: gradeResult !== null ? gradeResult.toString() : null,
+            });
+          }
         }
 
         if (totalWeight > 1.001) {
@@ -142,24 +187,41 @@ export async function POST(request) {
           examGrade: examGradeResult !== null ? examGradeResult.toString() : null,
           semesterId,
         },
-        evaluations: evalList,
+        standaloneEvals,
+        groupDefs,
       });
     }
 
     // ── Insert everything in one transaction ──────────────────────
     await db.transaction(async (tx) => {
-      for (const { course: courseData, evaluations: evalData } of validated) {
+      for (const { course: courseData, standaloneEvals, groupDefs } of validated) {
         const [inserted] = await tx
           .insert(courses)
           .values(courseData)
           .returning({ id: courses.id });
 
-        if (evalData.length > 0) {
+        const courseId = inserted.id;
+
+        // Standalone evaluations
+        if (standaloneEvals.length > 0) {
           await tx.insert(evaluations).values(
-            evalData.map((ev) => ({
-              ...ev,
-              groupId: null,
-              courseId: inserted.id,
+            standaloneEvals.map((ev) => ({ ...ev, groupId: null, courseId }))
+          );
+        }
+
+        // Groups + their items
+        for (const { groupRow, items } of groupDefs) {
+          const [insertedGroup] = await tx
+            .insert(evaluationGroups)
+            .values({ ...groupRow, courseId })
+            .returning({ id: evaluationGroups.id });
+
+          await tx.insert(evaluations).values(
+            items.map((item) => ({
+              ...item,
+              weight: null,
+              groupId: insertedGroup.id,
+              courseId,
             }))
           );
         }
