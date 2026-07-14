@@ -22,8 +22,8 @@ export async function createStandaloneEvaluationAction(prevState, formData) {
     const gradeRaw = formData.get("grade");
 
     if (!title) return { error: "Title is required" };
-    if (isNaN(weightPct) || weightPct <= 0 || weightPct > 100)
-      return { error: "Weight must be between 1 and 100" };
+    if (isNaN(weightPct) || weightPct < 0 || weightPct > 100)
+      return { error: "Weight must be between 0 and 100" };
 
     const weight = weightPct / 100;
     const grade =

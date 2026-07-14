@@ -237,5 +237,5 @@ export const insertEvaluationGroupSchema = createInsertSchema(evaluationGroups, 
 export const insertEvaluationSchema = createInsertSchema(evaluations, {
   title: z.string().min(1, "Title required"),
   grade: z.coerce.number().min(1.0).max(7.0).optional().nullable(),
-  weight: z.coerce.number().min(0.01).max(1.0).optional().nullable(),
+  weight: z.coerce.number().min(0).max(1.0).optional().nullable(),
 });

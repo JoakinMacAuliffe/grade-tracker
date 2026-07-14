@@ -17,7 +17,7 @@ function validateGrade(g) {
 
 function validateWeight(w) {
   const n = parseFloat(w);
-  if (isNaN(n) || n <= 0 || n > 100) return { error: `Weight ${w} must be between 0 and 100` };
+  if (isNaN(n) || n < 0 || n > 100) return { error: `Weight ${w} must be between 0 and 100` };
   return n / 100;
 }
 

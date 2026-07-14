@@ -500,9 +500,9 @@ function AddEvalModal({
                 name="weight"
                 required
                 step="0.1"
-                min="1"
+                min="0"
                 max="100"
-                placeholder="e.g. 30"
+                placeholder="e.g. 30 (0 = not weighted)"
                 className={styles.formInput}
               />
             </label>
@@ -569,9 +569,9 @@ function AddEvalModal({
                 name="totalWeight"
                 required
                 step="0.1"
-                min="1"
+                min="0"
                 max="100"
-                placeholder="e.g. 30"
+                placeholder="e.g. 30 (0 = not weighted)"
                 className={styles.formInput}
               />
             </label>
